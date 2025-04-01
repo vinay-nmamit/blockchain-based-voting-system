@@ -1,0 +1,21 @@
+{
+    "name": "Blockchain Voting App",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "esbenp.prettier-vscode"
+            ]
+        }
+    }
+    },
+    "postCreateCommand": "pip install -r requirements.txt"
+}

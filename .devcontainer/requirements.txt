@@ -1,0 +1,4 @@
+Flask==2.0.1
+web3==5.25.0
+werkzeug==2.0.3 
+py-solc-x==1.0.0

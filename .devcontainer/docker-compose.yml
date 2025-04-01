@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  ganache:
+    image: trufflesuite/ganache-cli
+    ports:
+      - "8545:8545"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - ganache
+    ports:
+      - "5000:5000"
+    environment:
+      - GANACHE_URL=http://ganache:8545

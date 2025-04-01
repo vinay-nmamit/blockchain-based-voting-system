@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract Voting {
@@ -7,8 +8,8 @@ contract Voting {
         uint voteCount;
     }
 
-    mapping(address => bool) public voters;
     mapping(uint => Candidate) public candidates;
+    mapping(address => bool) public voters;
     uint public candidatesCount;
 
     event votedEvent(uint indexed candidateId);
@@ -16,6 +17,9 @@ contract Voting {
     constructor() {
         addCandidate("Alice");
         addCandidate("Bob");
+        addCandidate("Charlie");
+        addCandidate("David");
+        addCandidate("Eve");
     }
 
     function addCandidate(string memory _name) private {
@@ -25,7 +29,7 @@ contract Voting {
 
     function vote(uint _candidateId) public {
         require(!voters[msg.sender], "You have already voted.");
-        require(!_candidateId > 0 && _candidateId <= candidatesCount, "Invalid Candidate.");
+        require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate.");
 
         voters[msg.sender] = true;
         candidates[_candidateId].voteCount++;
