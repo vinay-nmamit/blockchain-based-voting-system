@@ -1,8 +1,19 @@
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
-# Install nodejs, npm, and netcat-openbsd
-RUN apt-get update && apt-get install -y nodejs npm netcat-openbsd
+# Install Docker, nodejs, npm, and netcat-openbsd
+RUN apt-get update && \
+    apt-get install -y \
+    nodejs \
+    npm \
+    netcat-openbsd \
+    curl \
+    gnupg \
+    lsb-release && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install Ganache CLI
 RUN npm install -g ganache-cli

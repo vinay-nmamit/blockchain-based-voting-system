@@ -1,9 +1,9 @@
+import os
+import json
+import logging
 from flask import Flask, render_template, request, redirect, url_for, flash
 from web3 import Web3
-import json
 from web3.exceptions import ContractLogicError, BadFunctionCallOutput
-import logging
-import os
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed to use Flask flash messages
@@ -13,11 +13,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Connect to Ganache
 ganache_url = os.getenv("GANACHE_URL", "http://localhost:8545")
+app.logger.debug(f"GANACHE_URL: {ganache_url}")
 w3 = Web3(Web3.HTTPProvider(ganache_url))
 
 # Read contract address from file
 with open("contract_address.txt", "r") as file:
     contract_address = file.read().strip()
+app.logger.debug(f"Contract Address: {contract_address}")
 
 with open("compiled_code.json", "r") as file:
     compiled_sol = json.load(file)
@@ -40,12 +42,12 @@ def index():
 @app.route('/vote', methods=['POST'])
 def vote():
     candidate_id = request.form['candidate']
-    logging.debug(f"Received vote request for candidate_id: {candidate_id}")
+    app.logger.debug(f"Received vote request for candidate_id: {candidate_id}")
     account = w3.eth.accounts[0]  # Use the first account for simplicity
-    logging.debug(f"Using account: {account}")
+    app.logger.debug(f"Using account: {account}")
     try:
         tx_hash = contract.functions.vote(int(candidate_id)).transact({'from': account})
-        logging.debug(f"Transaction hash: {tx_hash}")
+        app.logger.debug(f"Transaction hash: {tx_hash}")
         w3.eth.wait_for_transaction_receipt(tx_hash)
         flash("Vote cast successfully.", 'success')
     except ContractLogicError as e:

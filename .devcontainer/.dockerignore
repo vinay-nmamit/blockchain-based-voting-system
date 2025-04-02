@@ -1,1 +1,5 @@
-.devcontainer
+# Example .dockerignore file
+*.pyc
+__pycache__
+.env
+venv

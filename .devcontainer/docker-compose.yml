@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   ganache:
     image: trufflesuite/ganache-cli
@@ -7,11 +6,13 @@ services:
 
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
     depends_on:
       - ganache
     ports:
       - "5000:5000"
     environment:
       - GANACHE_URL=http://ganache:8545
+      - FLASK_APP=app
+      - FLASK_RUN_HOST=0.0.0.0
